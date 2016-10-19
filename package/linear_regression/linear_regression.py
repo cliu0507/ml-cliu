@@ -2,12 +2,52 @@ import numpy as np
 import scipy
 import os
 import re
+import math
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 # x is ( num_feature , num_example )
 # y is ( num_example , 1 )
 # theta is ( num_feature , 1)
+# Don't have regularized term
 def gradientDescent(x, y, theta, m, alpha , numIterations):
+    errorarr=np.zeros((numIterations,))
+    for i in range(0,numIterations):
+        # hypothesis is (num_example, 1)
+        thetaTrans = theta.transpose()
+        hypothesis = np.dot(thetaTrans,x)
+        hypothesis = hypothesis.reshape(m,1)
+        #Initialize updated theta matrix
+        theta_updated=np.zeros(theta.shape)
+        #Iterate feature from 0 to num_feature
+        for j in range(0,theta.shape[0]):
+            #Iterate and calculate sum of error
+            derivative = 0
+            error = 0
+            for k in range(0,m):
+                derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
+                error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))
+            theta_updated[j][0] = theta[j][0] - alpha/m * derivative
+        theta = theta_updated
+        errorarr[i]=error
+        print error
+        #print theta
+    #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
+    return theta,errorarr,errorarr[-1]
+
+def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
+    if if_regularized == "true":
+        #Regularized Linear Regression
+        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 10)
+    else:
+        theta, errorarr, min_error = gradientDescent(x , y , theta , m , alpha , numIterations)
+    plt.plot(range(1,numIterations+1),errorarr)
+    plt.show()
+
+
+#Hypothesis function has regularized term
+def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
+    errorarr=np.zeros((numIterations,))
     for i in range(0,numIterations):
         # hypothesis is (num_example, 1)
         thetaTrans = theta.transpose()
@@ -19,32 +59,24 @@ def gradientDescent(x, y, theta, m, alpha , numIterations):
         for j in range(0,theta.shape[0]):
             #Iterate and calculate sum of error
             error = 0
-            for k in range(0,m):
-                error += (hypothesis[k][0] - y[k][0]) * x[j][k]
-            theta_updated[j][0] = theta[j][0] - alpha/m * error
+            if j == 0:
+                derivative = 0
+                for k in range(0,m):
+                    derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
+                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]), 2))
+                theta_updated[0][0] = theta[j][0] - alpha/m * derivative
+            else:
+                derivative = 0
+                for k in range(0,m):
+                    derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
+                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))
+                theta_updated[j][0] = theta[j][0] * (1- lambda_value * alpha/m ) - alpha/m * derivative
         theta = theta_updated
-        print theta
-    return theta
-
-def gradientDescent2(x, y, theta, m, alpha , numIterations):
-    for i in range(0,numIterations):
-        # hypothesis is (num_example, 1)
-        thetaTrans = theta.transpose()
-        hypothesis = np.dot(thetaTrans,x)
-        hypothesis = hypothesis.reshape(m,1)
-        #Initialize updated theta matrix
-        theta_updated=np.zeros(theta.shape)
-        #Iterate feature from 0 to num_feature
-        for j in range(0,theta.shape[0]):
-            #Iterate and calculate sum of error
-            error = 0
-            for k in range(0,m):
-                error += (hypothesis[k][0] - y[k][0]) * x[j][k]
-            theta_updated[j][0] = theta[j][0] - alpha/m * error
-        theta = theta_updated
-        print theta
-    return theta
-
+        errorarr[i]=error
+        print error
+        #print theta
+    #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
+    return theta,errorarr,errorarr[-1]
 
 
 #Current file absolute path
@@ -127,4 +159,5 @@ theta = np.random.rand(num_feature+1,1)
 
 
 #Call gradient descent function
-theta=gradientDescent(x, y , theta, num_example, 0.001 , 50000)
+#(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
+chart_iteration_cost( "true", x, y , theta, num_example , 0.001 , 100000)
