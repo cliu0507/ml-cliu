@@ -6,10 +6,47 @@ import math
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-# x is ( num_feature , num_example )
+
+#Feature Scaling Function: make xi approximately in the range of [-1,1]
+# x is (num_feature+1, num_example)
+def feature_scaling_normalization(x , type , xMeans=None , xMin=None, xMax=None):
+    #Feature Scaling for training data
+    if type == "training":
+        print "Feature Scaling and Normalization for %s Data:" % type
+        #axis should be by dimension 1, that is, aggregate by second dimension(column), view from second dimension
+        xMeans= np.mean(x, axis=1)
+        xMax=np.max(x,axis=1)
+        xMin=np.min(x,axis=1)
+        num_feature=len(xMeans)
+        print xMeans
+        #Exclude x0 (No. zero feature), since we set x0 = 1 for all examples
+        for i in range(1,num_feature):
+            x[i][:] = (x[i][:] - xMeans[i])/[xMax[i]-xMin[i]]
+        return x,xMeans,xMax,xMin
+    #Feature Scaling before predicting
+    elif type == "predict":
+        print "Feature Scaling and Normalization for Predict Data"
+        #Check Dimension, xMeans,xMin, xMax should have dimension of (num_feature,)
+        if len(xMeans) != x.shape[1]+1:
+            raise Exception("Dimension Dismatch")
+        #Ignore first elements, since constant x0 = 1
+        xMeans = xMeans[1:]
+        xMin = xMin[1:]
+        xMax = xMax[1:]
+        #Numpy array broadcasting
+        x=(x-xMeans)/(xMax - xMin)
+        #Insert Dummy x0 = 1
+        x_scaled = np.insert(x,0,1,axis=1)
+        return x_scaled
+    else:
+        raise Exception("Wrong Input Arguments for feature_scaling_normalization function")
+
+
+# x is ( num_feature+1 , num_example )
 # y is ( num_example , 1 )
-# theta is ( num_feature , 1)
+# theta is ( num_feature+1 , 1)
 # Don't have regularized term
+# alpha is learning rate
 def gradientDescent(x, y, theta, m, alpha , numIterations):
     errorarr=np.zeros((numIterations,))
     for i in range(0,numIterations):
@@ -35,17 +72,12 @@ def gradientDescent(x, y, theta, m, alpha , numIterations):
     #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
     return theta,errorarr,errorarr[-1]
 
-def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
-    if if_regularized == "true":
-        #Regularized Linear Regression
-        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 10)
-    else:
-        theta, errorarr, min_error = gradientDescent(x , y , theta , m , alpha , numIterations)
-    plt.plot(range(1,numIterations+1),errorarr)
-    plt.show()
-
-
 #Hypothesis function has regularized term
+# x is ( num_feature+1 , num_example )
+# y is ( num_example , 1 )
+# theta is ( num_feature+1 , 1)
+# lamba_value is parameters for regularized term
+# alpha is learning rate
 def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
     errorarr=np.zeros((numIterations,))
     for i in range(0,numIterations):
@@ -78,6 +110,22 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
     #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
     return theta,errorarr,errorarr[-1]
 
+
+def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
+    if if_regularized == "true":
+        #Regularized Linear Regression
+        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 10)
+    else:
+        theta, errorarr, min_error = gradientDescent(x , y , theta , m , alpha , numIterations)
+    plt.plot(range(1,numIterations+1),errorarr)
+    plt.ylabel("min(J(theta))")
+    plt.xlabel("number of iteration")
+    plt.show()
+    return theta, errorarr, min_error
+
+def predict(theta, x_scaled):
+    y_predict=np.dot(theta.transpose(),x_scaled.transpose())
+    return y_predict
 
 #Current file absolute path
 cur_file=os.path.abspath(__file__)
@@ -153,11 +201,19 @@ x = x.transpose()
 #Convert y to (num_example,1) matrix
 y= y.reshape(num_example,1)
 
-#Random Choose theta
-#theta = np.ones((num_feature+1,1))
+#Random Choose theta at first round
+#theta.shape = (num_feature+1,1))
 theta = np.random.rand(num_feature+1,1)
 
+#Feature Scaling and Normalization
+x,xMeans,xMax,xMin = feature_scaling_normalization(x , "training")
 
-#Call gradient descent function
+#Call gradient descent function to Minimize J(theta)
 #(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
-chart_iteration_cost( "true", x, y , theta, num_example , 0.001 , 100000)
+theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.05 , 200000)
+
+#Call Predict function
+x = np.array([[3,4,5,6,-4], [4,5,5,6,5] , [-23,-4,5,2,7]])
+x_scaled = feature_scaling_normalization(x , "predict" , xMeans, xMax, xMin)
+y_predict = predict(theta, x_scaled)
+print y_predict
