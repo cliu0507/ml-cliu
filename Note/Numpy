@@ -1,0 +1,4 @@
+Use os.path to identify path
+Use numpy.fromstring to convert string to array
+Use numpy.vstack to stack arrays in sequence vertically(row wise)
+Use numpy.insert to Add dummy ones to matrix x for x0
