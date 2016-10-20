@@ -237,11 +237,13 @@ data_dir=moving_dir + '/data'
 
 #Example files input filename and full path
 x_file=data_dir+'/winequality-red.csv'
+x_file=data_dir+'/input.csv'
+
 #y is at the end of each line in x_file or y can be in a separate file
 #y_file=data_dir+'/y.csv'
 
 #Load Training Dataset files
-x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=";")
+x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=",")
 
 #x is a matrix with dimension (num_feature+1, num_example)
 #y is a vector with length num_example , y.shape() = (num_example,)
@@ -259,12 +261,13 @@ x,xMeans,xMax,xMin = feature_scaling_normalization(x , "training")
 
 #Call gradient descent function to Minimize J(theta)
 #(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
-theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 500)
+theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 5000)
 
 #Call Predict function
 #[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9] -- 4
 #[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7] -- 8
-x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
+#x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
+x = np.array([[5,6,6,2],[5,7,2,5]])
 x_scaled = feature_scaling_normalization(x , "predict" , xMeans, xMax, xMin)
 y_predict = predict(theta, x_scaled)
 print y_predict
