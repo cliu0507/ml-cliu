@@ -24,7 +24,7 @@ def load_training_dataset(x_file, y_file=None, y_position=None, delimiter=","):
 
         # Initial X and Y(feature matrix and y matrix)
         with open(x_file, 'r') as f:
-            for i, row in enumerate(f):
+            for i, row in enumerate(tqdm(f)):
                 #If this row has non-digit character, skip this line
                 if re.search('[a-zA-Z]', row):
                     continue
@@ -48,7 +48,7 @@ def load_training_dataset(x_file, y_file=None, y_position=None, delimiter=","):
 
         # Initial X (samples matrix)
         with open(x_file, 'r') as f:
-            for i, row in enumerate(f):
+            for i, row in enumerate(tqdm(f)):
                 #If this row has non-digit character, skip this line
                 if re.search('[a-zA-Z]', row):
                     continue
@@ -64,7 +64,7 @@ def load_training_dataset(x_file, y_file=None, y_position=None, delimiter=","):
 
         # Read y from data directory
         with open(y_file, 'r') as f:
-            for row in f:
+            for row in tqdm(f):
                 #If this row has non-digit character, skip this line
                 if re.search('[a-zA-Z]', row):
                     continue
@@ -82,11 +82,6 @@ def load_training_dataset(x_file, y_file=None, y_position=None, delimiter=","):
                     y = np.append(y, float(row.rstrip()))
                 else:
                     y = np.array([float(row.rstrip())])
-
-        # Add dummy ones to matrix x for x0
-        x = np.insert(x, 0, 1, axis=1)
-        # Reshape x to normal shape and theta matrix
-        x = x.transpose()
     else:
         raise Exception("Wrong Argument while calling load_training_data function")
     # Check if x or training dataset is empty
@@ -158,13 +153,14 @@ def gradientDescent(x, y, theta, m, alpha , numIterations):
             error = 0
             for k in range(0,m):
                 derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
-                error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))
+                error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2)) / (2*m)
             theta_updated[j][0] = theta[j][0] - alpha/m * derivative
         theta = theta_updated
         errorarr[i]=error
-        print error
+        print("Iteration %d | Cost: %f" % (i, error))
     #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
     return theta,errorarr,errorarr[-1]
+
 
 #Hypothesis function has regularized term
 # x is ( num_feature+1 , num_example )
@@ -189,19 +185,20 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
                 derivative = 0
                 for k in range(0,m):
                     derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
-                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]), 2))
+                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]), 2)) / (2*m)
                 theta_updated[0][0] = theta[j][0] - alpha/m * derivative
             else:
                 derivative = 0
                 for k in range(0,m):
                     derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
-                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))
+                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))/ (2*m)
                 theta_updated[j][0] = theta[j][0] * (1- lambda_value * alpha/m ) - alpha/m * derivative
         theta = theta_updated
         errorarr[i]=error
-        print error
+        print("Iteration %d | Cost: %f" % (i, error))
     #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
     return theta,errorarr,errorarr[-1]
+
 
 #This is the example implementation from stackflow, note that x, y are transpose of ours
 #http://stackoverflow.com/questions/17784587/gradient-descent-using-python-and-numpy
@@ -212,30 +209,37 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
 # loss is (num_example,)
 def gradientDescent_stackflow(x, y, theta, m, alpha, numIterations):
     xTrans = x.transpose()
+    errorarr = np.zeros((numIterations,))
     for i in range(0, numIterations):
         hypothesis = np.dot(x, theta)
         loss = hypothesis - y
         # avg cost per example (the 2 in 2*m doesn't really matter here.
         # But to be consistent with the gradient, I include it)
         cost = np.sum(loss ** 2) / (2 * m)
-        print("Iteration %d | Cost: %f" % (i, cost))
+        #print("Iteration %d | Cost: %f" % (i, cost))
         # avg gradient per example
         gradient = np.dot(xTrans, loss) / m
         # update
         theta = theta - alpha * gradient
-    return theta
+        errorarr[i] = cost
+    return theta, errorarr, errorarr[-1]
+
 
 def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
     if if_regularized == "true":
         #Regularized Linear Regression
-        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 10)
-    else:
+        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 0.1)
+    elif if_regularized == "false":
         theta, errorarr, min_error = gradientDescent(x , y , theta , m , alpha , numIterations)
+    elif if_regularized == "stackflow":
+        #Note stackflow version have reversed x and y (actually no need to transpose vector because of numpy array feature)
+        theta, errorarr, min_error = gradientDescent_stackflow(x.transpose(), y, theta, m, alpha, numIterations)
     plt.plot(range(1,numIterations+1),errorarr)
     plt.ylabel("min(J(theta))")
     plt.xlabel("number of iteration")
     plt.show()
     return theta, errorarr, min_error
+
 
 def predict(theta, x_scaled):
     y_predict=np.dot(theta.transpose(),x_scaled.transpose())
@@ -243,52 +247,58 @@ def predict(theta, x_scaled):
 
 
 
+def main():
+    #Current file absolute path
+    cur_file=os.path.abspath(__file__)
 
+    #Directory moving pointers
+    moving_dir=os.path.dirname(cur_file)
 
-#Current file absolute path
-cur_file=os.path.abspath(__file__)
+    #Find /data directory
+    while(not os.path.isdir(moving_dir + '/data')):
+        moving_dir = os.path.dirname(moving_dir)
+    data_dir=moving_dir + '/data'
 
-#Directory moving pointers
-moving_dir=os.path.dirname(cur_file)
+    #Example files input filename and full path
+    x_file=data_dir+'/winequality-red.csv'
+    #x_file=data_dir+'/input.csv'
 
-#Find /data directory
-while(not os.path.isdir(moving_dir + '/data')):
-    moving_dir = os.path.dirname(moving_dir)
-data_dir=moving_dir + '/data'
+    #y is at the end of each line in x_file or y can be in a separate file
+    #y_file=data_dir+'/y.csv'
 
-#Example files input filename and full path
-x_file=data_dir+'/winequality-red.csv'
-x_file=data_dir+'/input.csv'
+    #Load Training Dataset files
+    x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=";")
+    #x,y,num_example,num_feature = load_training_dataset(x_file, y_file, None, delimiter=",")
 
-#y is at the end of each line in x_file or y can be in a separate file
-#y_file=data_dir+'/y.csv'
+    #x is a matrix with dimension (num_feature+1, num_example)
+    #y is a vector with length num_example , y.shape() = (num_example,)
+    #theta is a matrix with dimension (num_feature+1,1) theta.shape() = (num_feature+1, 1)
 
-#Load Training Dataset files
-x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=",")
+    #Convert y to (num_example,1) matrix
+    y= y.reshape(num_example,1)
 
-#x is a matrix with dimension (num_feature+1, num_example)
-#y is a vector with length num_example , y.shape() = (num_example,)
-#theta is a matrix with dimension (num_feature+1,1) theta.shape() = (num_feature+1, 1)
+    #Random Choose theta at first round
+    #theta.shape = (num_feature+1,1))
+    theta = np.random.rand(num_feature+1,1)
 
-#Convert y to (num_example,1) matrix
-y= y.reshape(num_example,1)
+    #Feature Scaling and Normalization
+    x,xMeans,xMax,xMin = feature_scaling_normalization(x , "training")
 
-#Random Choose theta at first round
-#theta.shape = (num_feature+1,1))
-theta = np.random.rand(num_feature+1,1)
+    #Call gradient descent function to Minimize J(theta)
+    #(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
+    theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 10000)
 
-#Feature Scaling and Normalization
-x,xMeans,xMax,xMin = feature_scaling_normalization(x , "training")
+    print "Parameter Theta is " + str(theta.tolist())
 
-#Call gradient descent function to Minimize J(theta)
-#(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
-theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 5000)
+    #Call Predict function
+    #[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9] -- 4
+    #[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7] -- 8
+    #Note: no need to add x0 =1, predict function will handle dummy x0
+    x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
+    #x = np.array([[7],[-1]])
+    x_scaled = feature_scaling_normalization(x , "predict" , xMeans, xMin, xMax)
+    y_predict = predict(theta, x_scaled)
+    print y_predict
 
-#Call Predict function
-#[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9] -- 4
-#[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7] -- 8
-#x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
-x = np.array([[5,6,6,2],[5,7,2,5]])
-x_scaled = feature_scaling_normalization(x , "predict" , xMeans, xMax, xMin)
-y_predict = predict(theta, x_scaled)
-print y_predict
+if __name__ == "__main__":
+    main()
