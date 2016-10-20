@@ -203,6 +203,27 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
     #Return theta, errorarr in different num_iteration and final minimum error(last element in errorarr)
     return theta,errorarr,errorarr[-1]
 
+#This is the example implementation from stackflow, note that x, y are transpose of ours
+#http://stackoverflow.com/questions/17784587/gradient-descent-using-python-and-numpy
+# x is (num_example, num_feature+1)
+# y is (num_example,)
+# theta is (num_feature+1, )
+# hypothesis is (num_example,)
+# loss is (num_example,)
+def gradientDescent_stackflow(x, y, theta, m, alpha, numIterations):
+    xTrans = x.transpose()
+    for i in range(0, numIterations):
+        hypothesis = np.dot(x, theta)
+        loss = hypothesis - y
+        # avg cost per example (the 2 in 2*m doesn't really matter here.
+        # But to be consistent with the gradient, I include it)
+        cost = np.sum(loss ** 2) / (2 * m)
+        print("Iteration %d | Cost: %f" % (i, cost))
+        # avg gradient per example
+        gradient = np.dot(xTrans, loss) / m
+        # update
+        theta = theta - alpha * gradient
+    return theta
 
 def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
     if if_regularized == "true":
