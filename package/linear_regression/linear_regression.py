@@ -117,13 +117,14 @@ def feature_scaling_normalization(x , type , xMeans=None , xMin=None, xMax=None)
     elif type == "predict":
         print "Feature Scaling and Normalization for Predict Data"
         #Check Dimension, xMeans,xMin, xMax should have dimension of (num_feature,)
-        if len(xMeans) != x.shape[1]+1:
+        if len(xMeans) != x.shape[0]:
             raise Exception("Dimension Dismatch")
         #Ignore first elements, since constant x0 = 1
-        xMeans = xMeans[1:]
-        xMin = xMin[1:]
-        xMax = xMax[1:]
+        xMeans = xMeans[1:] #Dimension (num_feature, )
+        xMin = xMin[1:]     #Dimension (num_feature, )
+        xMax = xMax[1:]     #Dimension (num_feature, )
         #Numpy array broadcasting
+        x=x[1:][:].transpose()
         x=(x-xMeans)/(xMax - xMin)
         #Insert Dummy x0 = 1
         x_scaled = np.insert(x,0,1,axis=1)
@@ -260,14 +261,15 @@ def main():
     data_dir=moving_dir + '/data'
 
     #Example files input filename and full path
-    x_file=data_dir+'/winequality-red.csv'
-    #x_file=data_dir+'/input.csv'
+    #x_file contains both feature and y value, y value is last element of each line
+    x_file=data_dir+'/regression_example.csv'
 
     #y is at the end of each line in x_file or y can be in a separate file
     #y_file=data_dir+'/y.csv'
 
     #Load Training Dataset files
-    x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=";")
+    x,y,num_example,num_feature = load_training_dataset(x_file, None, -1, delimiter=",")
+    #Use below function if y values of example are at another separate file
     #x,y,num_example,num_feature = load_training_dataset(x_file, y_file, None, delimiter=",")
 
     #x is a matrix with dimension (num_feature+1, num_example)
@@ -289,14 +291,27 @@ def main():
     theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 10000)
 
     print "Parameter Theta is " + str(theta.tolist())
+    print "Note: Feature Scaling may make final theta looks not make senses to raw data"
 
     #Call Predict function
     #[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9] -- 4
     #[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7] -- 8
     #Note: no need to add x0 =1, predict function will handle dummy x0
-    x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
-    #x = np.array([[7],[-1]])
+    #x = np.array([[7.4,0.59,0.08,4.4,0.086,6,29,0.9974,3.38,0.5,9],[8.6,0.42,0.39,1.8,0.068,6,12,0.99516,3.35,0.69,11.7]])
+
+    #Below are what need to be predicted
+    #---------
+    x = np.array([[7],[-1]])
+    #---------
+    #Add dummy x0=1 for each sample
+    x = np.insert(x, 0, 1, axis=1)
+    #Convert x to desired dimension (numb_feature+1, num_sample)
+    x = x.transpose()
+
+    #Feature Scaling
     x_scaled = feature_scaling_normalization(x , "predict" , xMeans, xMin, xMax)
+
+    #Call Predicting function
     y_predict = predict(theta, x_scaled)
     print y_predict
 
