@@ -176,7 +176,8 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
         # hypothesis is (num_example, 1)
         thetaTrans = theta.transpose()
         hypothesis = np.dot(thetaTrans,x)
-        hypothesis = hypothesis.reshape(m,1)
+        hypothesis = (-1)*hypothesis.reshape(m,1)
+        hypothesis = 1/(1+np.exp(hypothesis))
         #Initialize updated theta matrix
         theta_updated=np.zeros(theta.shape)
         #Iterate feature from 0 to num_feature
@@ -187,13 +188,15 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
                 derivative = 0
                 for k in range(0,m):
                     derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
-                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]), 2)) / (2*m)
+                    error += ((-1) * y[k][0] * np.log(hypothesis[k][0]) - (1 - y[k][0]) * np.log(
+                        1 - hypothesis[k][0])) / m
                 theta_updated[0][0] = theta[j][0] - alpha/m * derivative
             else:
                 derivative = 0
                 for k in range(0,m):
                     derivative += (hypothesis[k][0] - y[k][0]) * x[j][k]
-                    error += math.sqrt(math.pow((hypothesis[k][0] - y[k][0]),2))/ (2*m)
+                    error += ((-1) * y[k][0] * np.log(hypothesis[k][0]) - (1 - y[k][0]) * np.log(
+                        1 - hypothesis[k][0])) / m
                 theta_updated[j][0] = theta[j][0] * (1- lambda_value * alpha/m ) - alpha/m * derivative
         theta = theta_updated
         errorarr[i]=error
@@ -202,40 +205,14 @@ def gradientDescent2(x, y, theta, m, alpha , numIterations, lambda_value):
     return theta,errorarr,errorarr[-1]
 
 
-#This is the example implementation from stackflow, note that x, y are transpose of ours
-#http://stackoverflow.com/questions/17784587/gradient-descent-using-python-and-numpy
-# x is (num_example, num_feature+1)
-# y is (num_example,)
-# theta is (num_feature+1, )
-# hypothesis is (num_example,)
-# loss is (num_example,)
-def gradientDescent_stackflow(x, y, theta, m, alpha, numIterations):
-    xTrans = x.transpose()
-    errorarr = np.zeros((numIterations,))
-    for i in range(0, numIterations):
-        hypothesis = np.dot(x, theta)
-        loss = hypothesis - y
-        # avg cost per example (the 2 in 2*m doesn't really matter here.
-        # But to be consistent with the gradient, I include it)
-        cost = np.sum(loss ** 2) / (2 * m)
-        #print("Iteration %d | Cost: %f" % (i, cost))
-        # avg gradient per example
-        gradient = np.dot(xTrans, loss) / m
-        # update
-        theta = theta - alpha * gradient
-        errorarr[i] = cost
-    return theta, errorarr, errorarr[-1]
-
-
 def chart_iteration_cost( if_regularized, x , y , theta,m , alpha , numIterations ):
     if if_regularized == "true":
         #Regularized Linear Regression
-        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 0.1)
+        theta, errorarr, min_error = gradientDescent2(x, y, theta, m, alpha, numIterations, 0.01)
     elif if_regularized == "false":
         theta, errorarr, min_error = gradientDescent(x , y , theta , m , alpha , numIterations)
-    elif if_regularized == "stackflow":
-        #Note stackflow version have reversed x and y (actually no need to transpose vector because of numpy array feature)
-        theta, errorarr, min_error = gradientDescent_stackflow(x.transpose(), y, theta, m, alpha, numIterations)
+    else:
+        raise Exception("Wrong argument \'if_regularized\' input")
     plt.plot(range(1,numIterations+1),errorarr)
     plt.ylabel("min(J(theta))")
     plt.xlabel("number of iteration")
@@ -289,7 +266,7 @@ def main():
 
     #Call gradient descent function to Minimize J(theta)
     #(theta,_,_)=gradientDescent(x, y , theta, num_example, 0.01 , 50000)
-    theta, errorarr, min_error = chart_iteration_cost( "false", x, y , theta, num_example , 0.5 , 200000)
+    theta, errorarr, min_error = chart_iteration_cost( "true", x, y , theta, num_example , 0.5 , 50000)
 
     print "Parameter Theta is " + str(theta.tolist())
     print "Note: Feature Scaling may make final theta looks not make senses to raw data"
