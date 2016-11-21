@@ -1,0 +1,56 @@
+
+我的复习资料 (感谢大微软的OneNote神器)， 希望对大家有用。
+A)    Algorithm
+1)    Online Judge : 刷了一遍Leetcode,一遍Lintcode(还剩下20 题没做完)
+2)    Leetcode/Lintcode 题解http://algorithm.yuanbin.me/zh-cn/index.html
+       or https://www.youtube.com/channel/UCBedpxcU3mTJ-_PrKAP4vEg
+3)    Crack the coding interview 6thedition: 看了2遍
+4)    MIT Introduction toAlgorithms, Third Edition : 主要看的是dynamic programming, graph algorithm
+5)    订阅geeksforgeeks (手机也有他们的app)
+6)    数据结构可视化
+       http://visualgo.net/
+       http://www.cs.usfca.edu/~galles/visualization/Algorithms.html
+7)    Union-Find https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf
+8)    Trie and suffix tree
+        http://www.cs.jhu.edu/~langmea/resources/lecture_notes/tries_and_suffix_tries.pdf
+9)    Segment tree  
+        http://www.lintcode.com/en/problem  filter = Data Structure-Tree->segment tree
+10)  Interval tree
+        http://www.geeksforgeeks.org/interval-tree/
+11)  Tournament Tree
+        http://www.geeksforgeeks.org/tournament-tree-and-binary-heap/   
+12)  Successor/Predecessor Rules inBinary Trees
+       http://facultyfp.salisbury.edu/despickler/personal/Resources/AdvancedDataStructures/Handouts/succ_pred_rules.pdf
+13)  Counting sort, Radix sort,bucket sort (到geeksforgeeks里面找)
+14) Time complexity of recursion
+
+ 
+B)     Machine Learning & Data scientist
+1)     Andrew Ng Machine Learning https://www.coursera.org/learn/machine-learning
+2)     Andrew Ng Lecture Notes http://cs229.stanford.edu/materials.html
+3)     120 Data Science Interview questions (部分答案 https://datascienceinterview.quora.com/Answers-1)
+4)     Data Scientist handbook
+http://www.thedatasciencehandbook.com/
+5)     Mining Massive datasets
+https://www.coursera.org/course/mmds(重点看一些map-reduce, recommender system, Locality-Sensitive Hashing (for jaccard,cosine, euclidean distance), bloom filter, 以及大数据下的改进的Apriori, K-means, SVD,online stream algorithm)
+6)     Probability Cheatsheet v2.0  http://static1.squarespace.com/static/54bf3241e4b0f0d81bf7ff36/t/55e9494fe4b011aed10e48e5/1441352015658/probability_cheatsheet.pdf
+7)     Matrix cookbook
+主要是ch2.4Derivatives of Matrixes, Vectors and Scalar Forms以及 ch2.5 Derivatives of Traceshttp://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf
+8)     Bayesian Method for Hackers
+http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/
+9)     A/B testing
+http://engineering.richrelevance.com/bayesian-ab-tests/
+https://vwo.com/ab-testing/  
+https://blog.kissmetrics.com/ab-testing-introduction/
+http://www.smashingmagazine.com/2010/06/the-ultimate-guide-to-a-b-testing/
+C)     System design
+1)     九章算法系统设计的收费课程 http://www.jiuzhang.com/course/2/
+2)     MITBBS的总结http://www.mitbbs.com/article_t/JobHunting/32777529.html
+3)     CSDN十道海量数据处理面试题与十个方法大总结 
+http://blog.csdn.net/v_july_v/article/details/6279498
+4)     Consistent hashing https://www.youtube.com/watch?v=jznJKL0CrxM
+5)     Design pattern http://www.tutorialspoint.com/design_pattern/
+D)    其他
+OneNote 整理笔记
+Office Lens 扫描收据
+Salary Negotiate https://www.youtube.com/playlist?list=PLPZCUlZ2z01moBi3zjrNzbuIeyu3zW0Kf

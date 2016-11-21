@@ -1,0 +1,431 @@
+Data Science/Machine Learning Questions
+
+http://www.1point3acres.com/bbs/thread-146158-1-1.html
+
+
+BlackRock Solutions Data Science
+	 1. 我看你之前用过Logistic Regression，能告诉我你为啥选这个么？以及你能不能说说其他的分类器及特点么？
+	        答：两个原因，LR的CV错误率低，然后回归方程的形式好解释。还有SVM/Tree blabla...
+	 2. 我看你做过很多Time Series的模型，给我讲讲怎么做ARMA模型？
+	        答：检验平稳性，不平稳的话差分一下；然后ACF/PACF决定AR/MA的阶数，拟合以后检验残差是不是白噪声。. 
+	 3. 看你提到过NLP，说说怎么决定一个单词Apple是水果还是公司？.
+	        答：（这题我蒙了，因为实在是接触少）呃，我们应该有两种训练集，然后分别给这两个文本做个字典，统计一下词频，然后	把给定文章的词频和两个对比，那个频率更接近就属于哪个（Po主太渣不知道这玩意叫unigram）
+	 4. 写一段代码，1-100，遇到3的倍数打印Black，5的倍数Rock，3和5的倍数BlackRock
+	        答：这个简单，写个for循环，mod 15 BlackRock，然后mod 5 Rock，然后mod 3 Black.
+
+
+IBM DATA SCIENTIST  OA
+都是Machine learning的东西
+	1.1 How did you become interested in a position with our IBM team.. 
+	1.2 How do your areas of studies and experience make you a great candidate for our team.
+	2.what software tools do you prefer for Data Science and analytics and why do you like them?
+	3.tell us about any question you have in data mapping or integration of data from multiple sources 	into a singular database.
+	4.difference between supervised and unsupervised machine learning? Give example
+	5.major steps in predictive analytics/machine learning?. 
+	6.what does 'p Value' signify and how is it used in hypothesis testing?
+	7.techniques to perform missing value inputations.
+	8.'confidence intervals' and how to interpret? 
+	9.how to evaluate the performance of a regression prediction model as opposed to a classification 	prediction model?
+	10.explain : sensitivity, specificity, precision and recall.
+	11.how to overcome the proplem of over fitting?
+	12. explain a project where you've worked with a real data set.
+	    -how large was that data set?. 
+	    -what issues did you encounter with the data?
+	    -what were your findings?
+
+Yahoo Data Scientist:
+Machine learning 和 数学期望： 
+	开始问supervised learning和unsupervised learning的区别， 都有哪些不同的方法。然后问K-Means的概念和方法。 	最后给了一道数学期望题目：给定一个probability density function, 然后算期望。   
+	Answer: 给定probability density function, 然后算期望 就是给f(x)算E(x)? 相当于f(x)xdx求他的积分。
+
+
+Zynga Data Scientist:
+	1. Presentation。
+	2. behavior question，主要就是怎样处理冲突，公司的优点之类的，然后是预期收入一系列的东西
+	3. Product manager面的，问得问题如下
+	    3a。25匹马，没有钟，问最少比较几次能找出跑得最快的5匹，并且把这5匹排好
+	    3b。衡量一种交通方式好快的metric
+	    3c。我最喜欢的一个app，为什么，可以怎样改进
+	    3d。如果你的听众是8岁，怎么和他解释linear regression和logistic regression的区别.
+	4. Lunch with distinguished data scientist
+	5. Architect。一共两道题
+	   5a。remove duplicate elements in linkedlist
+	   5b。print valid parenthese. 
+	6. Chief data scientist。玩poker，当一个人进来的时候，怎么样匹配他的对手最好，写出objective 	function。这是一个很大的问题，根据我的理解，可以分为以下几步
+	   6a。怎样定义好？是买的下注的游戏币最多，还是玩的时间更长，还是能带来很多人一起玩
+	   6b。需不需要考虑用户的需求，比如要不要和家人玩
+	   6c。有些人相互之间玩过，有些人没玩过。怎么样优化相互玩过之间的人的关系和没玩过的人之间的关系.
+	   6d。objective function怎么写，设计什么指示什么模块
+
+
+Two Sigma:
+	Round 1 : 一个白人manager，让我在自己的笔记本上统计word count from a set of 	documents，documents是自己上网随便copy的几个新闻。follow-up写TF-IDF，也是轻松搞定。
+	Round 2 : 一个三哥哥，上来让我介绍自己的paper，我讲了一下，明显感觉他心不在焉啊。然后立马开始问我data 	scientist的问题
+	               a) 一个车站 if p(at least a bus comes in 1 minute) = 0.3, what is p(at least a bus comes 	in 3 minutes)?
+	               b.1) 给你房子的一些属性，如何设计预测房价? Predict House price given (square feets, posting 	date, neighborhood)
+	               b.2) 如果给你房子的坐标，又如何预测？Predict House price given (square feets, posting date, 	latitute and longitute).
+	               c.1) 给你一个小河，里面很多鱼，sample 	其中10000条，如何知道小河里面的鱼的平均长度，以及如何判断这个平均长度是否准确？
+	               c.2) 如果小河中有两种鱼，一个长，一个短，sample 其中10000条， 怎么分别预测两种鱼的长度 (kmean k=2	)。 
+	               c.3) 如果小河中有两种鱼，一个长，一个短，sample 其中10000条，怎么预测他们数量几乎一样多 follow-up 	是 p-value 怎么算   
+	               d) 一个测绘的组买入三架同一个工厂生产的测量长度的仪器，将这些仪器防止在不在一条直线上的三个点, 	分别测量得到长度为a, b, c 问如何预测更好的真实的 a*, b*, c*
+	Round 3 :  国人妹子 
+	               1)问了一些machine learning的基础问题，比如linear regression 怎么解(normal equation, 	stochastic gradient descent)，linear regression有什么assumption. 
+	               2) 然后问2个比较复杂的machine 	learning的设计题，一个类似预测zillow房价，一个是如何做document的labeling.	一个document可以有多个label。  我估计跪在这里。
+	               3) design 一个cost function  使得 false positive 的penalty是 false negative的100倍 (	修改logistic regression 的公式，给false positive 乘以一个100的系数）
+
+EA Data Science
+	1) Decision Tree, how it works? for classification and for regression
+	2) Describe cases/datasets when decision treee does not work.  Is it decision tree linear?
+	3) Cross validation and Regularization, Can cross validation use together with regularization?
+	4) a dataset with two features, x1 large range real value, x2 between 0-1,  how to approach? follow up 	: if # of data is large, how do we do?  add polynomial terms (polynomial kernal). 
+	5) rbf and polynomial kernal, when to use which
+	6) does kernal method work with other classifiers than SVM
+	7) find intersection of two arrays   [1,1,2,2,3,3,3,7]  [1,2,3,3,5]   =>  [1,2,3,3]  two solutions : 1)	 sort and two pointers  2)hashmap count,  find intersection of key, take min of counts
+
+	Another Offline Coding: 2个小时写一个 mini版的search engine， 用的就是 inverted document index. 	用户提交一个query （word1 & word2 & ...），返回含有query中word的文档的交集。
+	要发代码给他们过上million的文本集，我把自己的paper放在项目文件下，通过命令行读入内存，建立索引，然后interactive地让用户query。1个小时就轻松搞定。面试官也表示很满意。
+
+	Round 2: 国人，背景很牛，他收下了我的膝盖。 问了一个开放题，如果我只有地毯的一块布的小sample，如何自动产生整个地图，使得 1. pattern 不要重复，否则比较难看 2. 边缘比较平滑 这个题目的背景很有意思，就是游戏公司在设计游戏的时候如何把游戏地面的背景图案自绘制少量的pattern，如何利用这些小pattern产生视觉上和谐的整个地图因为是开放题目，所以我扯了好多。先上了个game of life， 然后瞎扯了multi-variate g最后上了KNN做regression.最后他给出他喜欢的一种解法，用2块布搭起来（overlap 1/2) 然后找折线，使得线上像素跟周围的像素的颜色值的差异最小）。于是根据这个setting写了一个三维矩阵从最左到最右的找cost
+
+Quora Data Science:
+	phone 1:  data scientist position
+	               a) Design a model that detect whether the original Quora question is modified to a 	different one? (TF-IDF, edit distance, LDA)
+	               b) How to compare performance recommendations model A and model B ( A/B testing)
+	               c) How long to run A/B testing, when to stop?  (can we just stop p-value < threshold?) 
+	               d) What is meaning of degree freedom?
+	Phone 2:  machine learning engineer
+	               a) Which classifiers are non-linear.
+	               b) Bagging bias, how to address. 
+	               c) how to combine L1 and L2 norm (elastic net regularization) .
+	               d) coding, 在coderpad里面写 decision tree 里面的 find best split 	（要求feature不仅仅是categorical，也可以是continuous的)  	应该跪在这里了，前面扯太多background，20分钟匆促写完，后来发现bug好几个	
+
+Summary1 From Mitbbs:
+	已经有前辈总结过很多machine learning的面试题(传送门： http://www.mitbbs.com/article/JobHunting/32808273_0.	html)，此帖是对其的补充，有一小部分是重复的。面经分两大块：machine learning questions 和 coding questions.
+	
+	Machine learning related questions:
+	-  Discuss how to predict the price of a hotel given data from previous 
+	years
+	-  SVM formulation
+	-  Logistic regression
+	-  Regularization
+	-  Cost function of neural network
+	-  What is the difference between a generative and discriminative algorithm
+	-  Relationship between kernel trick and dimension augmentation
+	-  What is PCA projection and why it can be solved by SVD  
+	-  Bag of Words (BoW) feature
+	-  Nonlinear dimension reduction (Isomap, LLE)
+	-  Supervised methods for dimension reduction
+	-  What is naive Bayes
+	-  Stochastic gradient / gradient descent
+	-  How to predict the age of a person given everyone’s phone call history
+	-  Variance and Bias (a very popular question, watch Andrew’s class)
+	-  Practices: When to collect more data / use more features / etc. (watch 
+	Andrew’s class)
+	-  How to extract features of shoes
+	-  During linear regression, when using each attribute (dimension) 
+	independently to predict the target value, you get a positive weight for 
+	each attribute. However, when you combine all attributes to predict, you get
+	some large negative weights, why? How to solve it?
+	-  Cross Validation
+	-  Reservoir sampling
+	-  Explain the difference among decision tree, bagging and random forest
+	-  What is collaborative filtering 
+	-  How to compute the average of a data stream (very easy, different from 
+	moving average)
+	-  Given a coin, how to pick 1 person from 3 persons with equal probability.
+	
+	
+	Coding related questions:
+	-  Leetcode: Number of Islands
+	-  Given the start time and end time of each meeting, compute the smallest 
+	number of rooms to host these meetings. In other words, try to stuff as many
+	meetings in the same room as possible
+	-  Given an array of integers, compute the first two maximum products(乘积) 
+	of any 3 elements (O(nlogn))
+	-  LeetCode: Reverse words in a sentence (follow up: do it in-place) 
+	-  LeetCode: Word Pattern
+	-  Evaluate a formula represented as a string, e.g., “3 + (2 * (4 - 1) )”
+	-  Flip a binary tree
+	-  What is the underlying data structure for JAVA hashmap? Answer: BST, so 
+	that the keys are sorted.
+	-  Find the lowest common parent in a binary tree
+	-  Given a huge file, each line of which is a person’s name. Sort the names
+	using a single computer with small memory but large disk space
+	-  Design a data structure to quickly compute the row sum and column sum of 
+	a sparse matrix  
+	-  Design a wrapper class for a pointer to make sure this pointer will 
+	always be deleted even if an exception occurs in the middle
+	-  My Google onsite questions: http://www.mitbbs.com/article_t/JobHunting/33106617.html
+	
+	面试的一点点心得：
+	最重要的一点，我觉得是心态。当你找了几个月还没有offer，并且看到别人一直在版
+	上报offer的时候，肯定很焦虑甚至绝望。我自己也是，那些报offer的帖子，对我来说
+	都是负能量，绝对不去点开看。这时候，告诉自己四个字：继续坚持。我相信机会总会
+	眷顾那些努力坚持的人，付出总有回报。
+	machine learning的职位还是很多的，数学好的国人们优势明显，大可一试, 看到一些
+	帖子说这些职位主要招PhD，这个结论可能有一定正确性。但是凭借我所遇到的大部分
+	面试题来看，个人认为MS或者PhD都可以。MS的话最好有一些学校里做project的经验。
+	仔细学习Andrew Ng在Coursera上的 machine learning课，里面涵盖很多面试中的概念
+	和题目。虽然讲得比较浅显，但对面试帮助很大。可以把video的速度调成1.5倍，节省
+	时间。
+	如果对一些概念或算法不清楚或者想加深理解，找其他的各种课件和视频学习，例如
+	coursera，wiki，牛校的machine learning课件。
+	找工作之前做好对自己的定位。要弄清楚自己想做什么，擅长做什么，如何让自己有竞
+	争力，然后取长补短（而不是扬长避短）。
+	感觉data scientist对coding的要求没有software engineer那么变态。不过即便如此
+	，对coding的复习也不应该松懈。
+	
+	
+	我个人觉得面试machine learning相关职位前需要熟悉的四大块：
+	Classification:
+	Logistic regression
+	Neural Net (classification/regression)
+	SVM
+	Decision tree
+	Random forest
+	Bayesian network
+	Nearest neighbor classification
+	
+	Regression:
+	Neural Net regression
+	Linear regression
+	Ridge regression (add a regularizer)
+	Lasso regression
+	Support Vector Regression
+	Random forest regression
+	Partial Least Squares
+	
+	Clustering:
+	K-means
+	EM
+	Mean-shift
+	Spectral clustering
+	Hierarchical clustering
+	
+	Dimension Reduction:
+	PCA
+	ICA
+	CCA
+	LDA
+	Isomap
+	LLE
+	Neural Network hidden layer
+
+
+Summary2 from Mitbbs:
+	1. Given a coin you don’t know it’s fair or unfair. Throw it 6 times and 
+	get 1 tail and 5 head. Determine whether it’s fair or not. What’s your 
+	confidence value? 
+	
+	2. Given Amazon data, how to predict which users are going to be top 
+	shoppers in this holiday season. 
+	
+	3. Which regression methods are you familiar? How to evaluate regression 
+	result? 
+	
+	4. Write down the formula for logistic regression. How to determine the 
+	coefficients given the data? 
+	
+	5. How do you evaluate regression? 
+	For example, in this particular case:
+	item click-through-rate  predicted rate
+	1       0.04        0.06
+	2       0.68        0.78
+	3       0.27        0.19
+	4       0.52        0.57
+	…
+	
+	6. What’s the formula for SVM? What is decision boundary? 
+	
+	7. A field with unknown number of rabbits. Catch 100 rabbits and put a label
+	on each of them. A few days later, catch 300 rabbits and found 60 with 
+	labels. Estimate how many rabbits are there?  
+	
+	8. Given 10 coins with 1 unfair coin and 9 fair coins. The unfair coin has &
+	#8532; prob. to be head. Now random select 1 coin and throw it 3 times. You 
+	observe head, head, tail. What’s the probability that the selected coin is 
+	the unfair one? 
+	
+	9. What’s the formula for Naive Bayesian classifier? What’s the assumption
+	in the formula? What kind of data is Naive Bayesian good at? What is not? 
+	
+	10. What is the real distribution of click-through rate of items? If you 
+	want to build a predictor/classifier for this data, how do you do it? How do
+	you divide the data? 
+	
+	11. You have a stream of data coming in, in the format as the following:
+	item_id, views, clicks, time
+	1            100     10         2013-11-28
+	1            1000   350       2013-11-29
+	1            200     14         2013-11-30
+	2            127     13         2013-12-1
+	…
+	
+	The same id are consecutive. 
+	
+	Click through rate = clicks / views. 
+	On every day, I want to output the item id when its click through rate is 
+	larger than a given threshold. 
+	For example, at day 1, item 1’s rate is 10/100=10%, day2, its (10+350)/(100
+	+1000)=0.32. day3 it is (10+350+14)/(100+1000+200)=0.28. 
+	If my threshold is 0.3, then at day 1, I don’t output. On day2 I output. On
+	day3, I don’t output.
+	
+	11. Given a dictionary and a string. Write a function, if every word is in 
+	the dictionary return true, otherwise return false. 
+	
+	12. Generate all the permutation of a string. 
+	For example, abc, acb, cba, … 
+	
+	13. We want to add a new feature to our product. How to determine if people 
+	like it?
+	A/B testing. How to do A/B testing? How many ways? pros and cons? 
+	
+	14. 44.3% vs 47.2% is it significant?  
+	
+	15. Design a function to calculate people’s interest to a place against the
+	distance to the place.
+	
+	16. How to encourage people to write more reviews on Yelp? How to determine 
+	who are likely to write reviews? How to increase the registration rate of 
+	Yelp? What features to add for a better Yelp app? We are expanding to other 
+	countries. Which country we should enter first? 
+	
+	17. What’s the difference between classification and regression? 
+	
+	18. Can you explain how decision tree works? How to build a decision tree 
+	from data? 
+	
+	19. What is regularization in regression? Why do regularization? How to do 
+	regularization? 
+	
+	20. What is gradient descent? stochastic gradient descent?
+	
+	21. We have a database of <product_id, name, description, price>. When user 
+	inputs a product name, how to return results fast? 
+	
+	22. If user gives a budget value, how to find the most expensive product 
+	under budget? Assume the data fits in memory. What data structure, or 
+	algorithm you use to find the product quickly? Write the program for it. 
+	
+	23. Given yelp data, how to find top 10 restaurants in America?
+	
+	24. Given a large file that we don’t know how many lines are there. It 
+	doesn’t fit into memory. We want to sample K lines from the file uniformly.
+	Write a program for it. 
+	
+	25. How to determine if one advertisement is performing better than the 
+	other? 
+	
+	26. How to evaluate classification result? What if the results are in 
+	probability mode? 
+	If I want to build a classifier, but the data is very unbalanced. I have a 
+	few positive samples but a lot of negative samples. What should I do?
+	
+	27. Given a lot of data, I want to random sample 1% of them. How to do it 
+	efficiently? 
+	
+	28. When a new user signs up Pinterest, we want to know its interests. We 
+	decide to show the user a few pins, 2 pins at a time. Let the user choose 
+	which pin s/he likes. After the user clicks on one of the 2, we select 
+	another 2 pins. 
+	Question: how to design the system and select the pins so that we can 
+	achieve our goal? 
+	
+	29. Write a function to compute sqrt(X). Write a function to compute pow(x, 
+	n) [square root and power)
+	
+	
+	30. Given a matrix
+	a b c  d
+	e f  g  h
+	i  j  k   l
+	Print it in this order:
+	a  f  k
+	b g l
+	c h
+	d
+	e j
+	i
+	
+	31. Given a matrix and an array of words, find if the words are in the 
+	matrix. You can search the 
+	
+	matrix in all directions:  from left to right, right to left, up to down, 
+	down to up, or diagonally. 
+	For example
+	w o r x b
+	h  e l  o v
+	i   n d e m
+	
+	then the word “world” is in the matrix. 
+	
+	
+	32. Given a coordinates, and two points A and B. How many ways to go from A 
+	to B? You can only move up or right. 
+	For example, from (1, 1) to (5, 7), one possible way is 1,1 -> 2, 1… 5, 1 -
+	> 5,2 -> ..5, 7
+	
+	
+	33. In a city where there are only vertical and horizontal streets. There 
+	are people on the cross point. These people want to meet. Please find a 
+	cross point to minimize the cost for all the people to move. 
+	
+	34. Design a job search ranking algorithm on glassdoor
+	
+	35. How to identify review spam?
+	
+	36. Glassdoor has this kind of data about a job : (position, company, 
+	location, salary). For example (Software Engineer, Microsoft, Seattle, $125K
+	). For some records, all four entires are available. But for others, the 
+	salary is missing. Design a way to estimate salary for those records.
+	
+	37. When to send emails to users in a day can get maximum click through rate?
+	
+	38. Youtube has video play log like this:
+	Video ID, time
+	vid1        t1
+	vid2        t2
+	...           ...
+	The log is super large. 
+	Find out the top 10 played videos on youtube in a given week.
+	
+	39. Write a program to copy a graph
+	
+	40. A bank has this access log:
+	IP address, time
+	ip1      t1
+	ip2      t2
+	...        ...
+	
+	If one ip accessed K times within m seconds, it may be an attack. 
+	Given the log, identify all IPs that may cause attack. 	
+
+
+Summary from Zhihu Newspaper:
+
+	1. 问Skill Set 以及对于常见工具的掌握。	
+	Skill Set就是指你掌握了哪些知识，一般问起来都是比较粗略地问，主要目的就是考察和团队的习惯以及工具的掌握是否Match。我	被问到过各种各要的碎碎的问题，比如计算机网络中HTTP、TCP、UDP协议，数据库的设计原则、实现方法，操作系统的一些基本知识	，Unix的常见指令，Hadoop和Hadoop 	Streaming如何使用、如何Debug，平时使用什么IDE什么OS……总之各个琐碎的角落都被问到过。
+	
+	2. 问简历，就简历上的技术细节发问，主要是项目有关的技术细节，以及相关的技术延伸。
+	比如我的项目中就提到了NLP相关的东西，就被问了一些和NLP相关工具的使用，比如Stanford NLP等。再又问了一些延伸的问题，比	如，如何自动生成一个有意义的句子，如何把一段文字Split成一个个句子，怎么选feature怎么做model等等。这类问题主要还是需	要对于自己的项目技术细节足够了解，且对于延伸的问题有所掌握。
+	
+	3. Machine Learning、Statistic的相关问题
+	Machine Learning相关的问题就太多了，我稍微列举一些我遇到过的问题：
+	* 一些分布参数的最大似然估计之类的东西是什么，如何推导
+	* LR SVM的本质区别是什么
+	* 哪些Regularization，都各有什么性质
+	* 对于Naive Bayes的理解，NB有哪些局限性
+	* Random Forest 为什么很好用
+	* 如何做Model Selection
+	* 给一组数据，问Decision 	Tree，LR，NB，SVM等算法学出来都是什么样子的，是否学不出来，怎么处理，有哪些Kernel，在图上画线怎么画
+	
+	还有被问到了一些比较难的问题，比如：
+	* 对于Graphical Model的理解，写出LDA的公式，给出Topic Model 生成过程等的
+	* PageRank的原理和公式推导	
+	总之，前面那些问题本质上都不是那么难，但是不少问题都需要对于ML各种知识的融会贯通，所以大家在学习的时候还是需要深入学习	，不要浮于表面。
+	
+	4. 给一个现实问题，如何解决。
+	这一类问题就比较宽泛了，主要是在回答的时候记住考察的目的很多时候并不是技术本身，而是你对于这一类问题没有思考的框架。比	如如何收集数据，收集那些数据，如何定feature，如何定measurement，如何定milestone等等。要分层次一步一步地讨论	
+
+	
